@@ -287,3 +287,74 @@ variable "contact" {
   }))
   default = []
 }
+
+variable "setting" {
+  type = list(object({
+    id           = number
+    enabled      = bool
+    setting_name = string
+  }))
+  default = []
+
+  validation {
+    condition = length([
+      for a in var.setting : true if contains(["MCAS", "WDATP", "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW", "WDATP_UNIFIED_SOLUTION", "Sentinel"], a.setting_name)
+    ]) == length(var.iot_security_solution)
+    error_message = "Possible values are MCAS , WDATP, WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW, WDATP_UNIFIED_SOLUTION and Sentinel."
+  }
+}
+
+variable "storage_defender" {
+  type = list(object({
+    id                                          = number
+    override_subscription_settings_enabled      = optional(bool)
+    malware_scanning_on_upload_cap_gb_per_month = optional(number)
+    malware_scanning_on_upload_enabled          = optional(bool)
+    sensitive_data_discovery_enabled            = optional(bool)
+    scan_results_event_grid_topic_id            = optional(bool)
+  }))
+  default = []
+
+  validation {
+    condition = length([
+    for a in var.storage_defender : true if a.malware_scanning_on_upload_cap_gb_per_month == -1 || a.malware_scanning_on_upload_cap_gb_per_month >= 0])
+    error_message = "Must be -1 or above 0. Omit this property or set to -1 if no capping is needed. Defaults to -1."
+  }
+}
+
+variable "subscription_pricing" {
+  type = list(object({
+    id            = number
+    tier          = string
+    resource_type = string
+    subplan       = optional(string)
+    extension = optional(list(object({
+      name                            = string
+      additional_extension_properties = optional(map(string))
+    })))
+  }))
+  default = []
+
+  validation {
+    condition = length([
+      for a in var.subscription_pricing : true if contains(["Free", "Standard"], a.tier)
+    ]) == length(var.iot_security_solution)
+    error_message = "Possible values are Free and Standard."
+  }
+
+  validation {
+    condition = length([
+      for a in var.subscription_pricing : true if contains(["Api", "AppServices", "ContainerRegistry", "KeyVaults", "KubernetesService", "SqlServers", "SqlServerVirtualMachines", "StorageAccounts", "VirtualMachines", "Arm", "Dns", "OpenSourceRelationalDatabases", "Containers", "CosmosDbs", "CloudPosture"], a.resource_type)
+    ]) == length(var.iot_security_solution)
+    error_message = "Possible values are Api, AppServices, ContainerRegistry, KeyVaults, KubernetesService, SqlServers, SqlServerVirtualMachines, StorageAccounts, VirtualMachines, Arm, Dns, OpenSourceRelationalDatabases, Containers, CosmosDbs and CloudPosture."
+  }
+}
+
+variable "workspace" {
+  type = list(object({
+    id           = number
+    scope        = string
+    workspace_id = any
+  }))
+  default = []
+}

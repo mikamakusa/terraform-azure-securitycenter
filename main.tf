@@ -166,3 +166,48 @@ resource "azurerm_security_center_contact" "this" {
   name                = lookup(var.contact[count.index], "name")
   phone               = lookup(var.contact[count.index], "phone")
 }
+
+resource "azurerm_security_center_server_vulnerability_assessment_virtual_machine" "this" {
+  virtual_machine_id = data.azurerm_virtual_machine.this.id
+}
+
+resource "azurerm_security_center_server_vulnerability_assessments_setting" "name" {
+  vulnerability_assessment_provider = "MdeTvm"
+}
+
+resource "azurerm_security_center_setting" "this" {
+  count        = length(var.setting)
+  enabled      = lookup(var.setting[count.index], "enabled")
+  setting_name = lookup(var.setting[count.index], "setting_name")
+}
+
+resource "azurerm_security_center_storage_defender" "this" {
+  count                                       = length(var.storage_defender)
+  storage_account_id                          = data.azurerm_storage_account.this.id
+  override_subscription_settings_enabled      = lookup(var.storage_defender[count.index], "override_subscription_settings_enabled")
+  malware_scanning_on_upload_cap_gb_per_month = lookup(var.storage_defender[count.index], "malware_scanning_on_upload_cap_gb_per_month")
+  malware_scanning_on_upload_enabled          = lookup(var.storage_defender[count.index], "malware_scanning_on_upload_enabled")
+  sensitive_data_discovery_enabled            = lookup(var.storage_defender[count.index], "sensitive_data_discovery_enabled")
+  scan_results_event_grid_topic_id            = lookup(var.storage_defender[count.index], "scan_results_event_grid_topic_id")
+}
+
+resource "azurerm_security_center_subscription_pricing" "this" {
+  count         = length(var.subscription_pricing)
+  tier          = lookup(var.subscription_pricing[count.index], "tier")
+  resource_type = lookup(var.subscription_pricing[count.index], "resource_type")
+  subplan       = lookup(var.subscription_pricing[count.index], "subplan")
+
+  dynamic "extension" {
+    for_each = lookup(var.subscription_pricing[count.index], "extension") == null ? [] : []
+    content {
+      name                            = lookup(extension.value, "name")
+      additional_extension_properties = lookup(extension.value, "additional_extension_properties")
+    }
+  }
+}
+
+resource "azurerm_security_center_workspace" "this" {
+  count        = length(var.log_analytics_workspace) == 0 ? 0 : length(var.workspace)
+  scope        = lookup(var.workspace[count.index], "scope")
+  workspace_id = try(element(module.log_analytics.workspace_id, lookup(var.workspace[count.index], "workspace_id")))
+}

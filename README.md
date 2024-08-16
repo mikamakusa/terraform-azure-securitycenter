@@ -8,14 +8,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.115.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.116.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_iothub"></a> [iothub](#module\_iothub) | git@github.com:mikamakusa/terraform-azure-iothub.git | n/a |
-| <a name="module_log_analytics"></a> [log\_analytics](#module\_log\_analytics) | git@github.com:mikamakusa/terraform-azure-log-analytics | n/a |
+| <a name="module_iothub"></a> [iothub](#module\_iothub) | git@github.com:mikamakusa/terraform-azure-iothub.git | 1.0.0 |
+| <a name="module_log_analytics"></a> [log\_analytics](#module\_log\_analytics) | git@github.com:mikamakusa/terraform-azure-log-analytics.git | 1.0.2 |
 
 ## Resources
 
@@ -30,6 +30,12 @@
 | [azurerm_security_center_automation.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_automation) | resource |
 | [azurerm_security_center_contact.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_contact) | resource |
 | [azurerm_security_center_server_vulnerability_assessment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_server_vulnerability_assessment) | resource |
+| [azurerm_security_center_server_vulnerability_assessment_virtual_machine.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_server_vulnerability_assessment_virtual_machine) | resource |
+| [azurerm_security_center_server_vulnerability_assessments_setting.name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_server_vulnerability_assessments_setting) | resource |
+| [azurerm_security_center_setting.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_setting) | resource |
+| [azurerm_security_center_storage_defender.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_storage_defender) | resource |
+| [azurerm_security_center_subscription_pricing.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_subscription_pricing) | resource |
+| [azurerm_security_center_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/security_center_workspace) | resource |
 | [azurerm_arc_machine.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/arc_machine) | data source |
 | [azurerm_eventhub.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub) | data source |
 | [azurerm_eventhub_authorization_rule.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
@@ -59,20 +65,39 @@
 | <a name="input_security_center_auto_provisioning"></a> [security\_center\_auto\_provisioning](#input\_security\_center\_auto\_provisioning) | n/a | `string` | `null` | no |
 | <a name="input_security_device_group"></a> [security\_device\_group](#input\_security\_device\_group) | n/a | <pre>list(object({<br>    id        = number<br>    iothub_id = any<br>    name      = string<br>    allow_rule = optional(list(object({<br>      connection_from_ips_not_allowed = optional(list(string))<br>      connection_to_ips_not_allowed   = optional(list(string))<br>      local_users_not_allowed         = optional(list(string))<br>      processes_not_allowed           = optional(list(string))<br>    })))<br>    range_rule = optional(list(object({<br>      duration = string<br>      max      = number<br>      min      = number<br>      type     = string<br>    })))<br>  }))</pre> | `[]` | no |
 | <a name="input_server_vulnerability_assessment"></a> [server\_vulnerability\_assessment](#input\_server\_vulnerability\_assessment) | n/a | <pre>list(object({<br>    id                 = number<br>    virtual_machine_id = any<br>    hybrid_machine_id  = any<br>  }))</pre> | `[]` | no |
+| <a name="input_setting"></a> [setting](#input\_setting) | n/a | <pre>list(object({<br>    id           = number<br>    enabled      = bool<br>    setting_name = string<br>  }))</pre> | `[]` | no |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | n/a | `string` | `null` | no |
+| <a name="input_storage_defender"></a> [storage\_defender](#input\_storage\_defender) | n/a | <pre>list(object({<br>    id                                          = number<br>    override_subscription_settings_enabled      = optional(bool)<br>    malware_scanning_on_upload_cap_gb_per_month = optional(number)<br>    malware_scanning_on_upload_enabled          = optional(bool)<br>    sensitive_data_discovery_enabled            = optional(bool)<br>    scan_results_event_grid_topic_id            = optional(bool)<br>  }))</pre> | `[]` | no |
 | <a name="input_subnet_name"></a> [subnet\_name](#input\_subnet\_name) | n/a | `string` | `null` | no |
+| <a name="input_subscription_pricing"></a> [subscription\_pricing](#input\_subscription\_pricing) | n/a | <pre>list(object({<br>    id            = number<br>    tier          = string<br>    resource_type = string<br>    subplan       = optional(string)<br>    extension = optional(list(object({<br>      name                            = string<br>      additional_extension_properties = optional(map(string))<br>    })))<br>  }))</pre> | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | `{}` | no |
 | <a name="input_virtual_machine_name"></a> [virtual\_machine\_name](#input\_virtual\_machine\_name) | n/a | `string` | `null` | no |
 | <a name="input_virtual_machine_scale_set_name"></a> [virtual\_machine\_scale\_set\_name](#input\_virtual\_machine\_scale\_set\_name) | n/a | `string` | `null` | no |
 | <a name="input_virtual_network_name"></a> [virtual\_network\_name](#input\_virtual\_network\_name) | n/a | `string` | `null` | no |
+| <a name="input_workspace"></a> [workspace](#input\_workspace) | n/a | <pre>list(object({<br>    id           = number<br>    scope        = string<br>    workspace_id = any<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_advanced_threat_protection_id"></a> [advanced\_threat\_protection\_id](#output\_advanced\_threat\_protection\_id) | n/a |
+| <a name="output_assessment_id"></a> [assessment\_id](#output\_assessment\_id) | n/a |
+| <a name="output_assessment_policy_id"></a> [assessment\_policy\_id](#output\_assessment\_policy\_id) | n/a |
+| <a name="output_assessment_policy_name"></a> [assessment\_policy\_name](#output\_assessment\_policy\_name) | n/a |
+| <a name="output_auto_provisioning_id"></a> [auto\_provisioning\_id](#output\_auto\_provisioning\_id) | n/a |
+| <a name="output_automation_id"></a> [automation\_id](#output\_automation\_id) | n/a |
+| <a name="output_automation_name"></a> [automation\_name](#output\_automation\_name) | n/a |
+| <a name="output_contact_id"></a> [contact\_id](#output\_contact\_id) | n/a |
+| <a name="output_contact_name"></a> [contact\_name](#output\_contact\_name) | n/a |
 | <a name="output_iot_security_device_group_id"></a> [iot\_security\_device\_group\_id](#output\_iot\_security\_device\_group\_id) | n/a |
 | <a name="output_iot_security_device_group_name"></a> [iot\_security\_device\_group\_name](#output\_iot\_security\_device\_group\_name) | n/a |
 | <a name="output_iot_security_solution_id"></a> [iot\_security\_solution\_id](#output\_iot\_security\_solution\_id) | n/a |
 | <a name="output_iot_security_solution_name"></a> [iot\_security\_solution\_name](#output\_iot\_security\_solution\_name) | n/a |
+| <a name="output_security_center_subscription_pricing_id"></a> [security\_center\_subscription\_pricing\_id](#output\_security\_center\_subscription\_pricing\_id) | n/a |
+| <a name="output_security_center_workspace_id"></a> [security\_center\_workspace\_id](#output\_security\_center\_workspace\_id) | n/a |
 | <a name="output_server_vulnerability_assessment_id"></a> [server\_vulnerability\_assessment\_id](#output\_server\_vulnerability\_assessment\_id) | n/a |
+| <a name="output_server_vulnerability_assessment_virtual_machine_id"></a> [server\_vulnerability\_assessment\_virtual\_machine\_id](#output\_server\_vulnerability\_assessment\_virtual\_machine\_id) | n/a |
+| <a name="output_server_vulnerability_assessments_setting_name"></a> [server\_vulnerability\_assessments\_setting\_name](#output\_server\_vulnerability\_assessments\_setting\_name) | n/a |
+| <a name="output_setting_id"></a> [setting\_id](#output\_setting\_id) | n/a |
+| <a name="output_setting_name"></a> [setting\_name](#output\_setting\_name) | n/a |
+| <a name="output_storage_defender_id"></a> [storage\_defender\_id](#output\_storage\_defender\_id) | n/a |
