@@ -61,14 +61,14 @@ variable "advanced_threat_protection" {
   default = []
 }
 
-variable "server_vulnerability_assessment" {
+/*variable "server_vulnerability_assessment" {
   type = list(object({
     id                 = number
     virtual_machine_id = any
     hybrid_machine_id  = any
   }))
   default = []
-}
+}*/
 
 variable "security_device_group" {
   type = list(object({

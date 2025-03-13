@@ -1,0 +1,6 @@
+[submodule "modules/terraform-azure-log-analytics"]
+	path = modules/terraform-azure-log-analytics
+	url = git@github.com:mikamakusa/terraform-azure-log-analytics.git
+[submodule "modules/terraform-azure-iothub"]
+	path = modules/terraform-azure-iothub
+	url = git@github.com:mikamakusa/terraform-azure-iothub.git

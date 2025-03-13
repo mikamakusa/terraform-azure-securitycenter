@@ -8,11 +8,11 @@ output "advanced_threat_protection_id" {
 
 ## SERVER VULNERABILITY ASSESSMENT ##
 
-output "server_vulnerability_assessment_id" {
+/*output "server_vulnerability_assessment_id" {
   value = try(
     azurerm_security_center_server_vulnerability_assessment.this.*.id
   )
-}
+}*/
 
 ## IOT SECURITY DEVICE GROUP ##
 

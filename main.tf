@@ -4,11 +4,11 @@ resource "azurerm_advanced_threat_protection" "this" {
   target_resource_id = data.azurerm_storage_account.this.id
 }
 
-resource "azurerm_security_center_server_vulnerability_assessment" "this" {
+/*resource "azurerm_security_center_server_vulnerability_assessment" "this" {
   count              = length(var.server_vulnerability_assessment)
   virtual_machine_id = try(data.azurerm_virtual_machine.this.*.id, lookup(var.server_vulnerability_assessment[count.index], "virtual_machine_id"))
   hybrid_machine_id  = try(data.azurerm_arc_machine.this.*.id, lookup(var.server_vulnerability_assessment[count.index], "hybrid_machine_id"))
-}
+}*/
 
 resource "azurerm_iot_security_device_group" "this" {
   count     = length(var.security_device_group)
